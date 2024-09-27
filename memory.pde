@@ -1,6 +1,6 @@
 // Pruek Tanvorakul 6601012610083
 
-int cols = 4; 
+int cols = 8; 
 int rows = 5; 
 int[][] cards = new int[cols][rows]; 
 boolean[][] revealed = new boolean[cols][rows]; 
@@ -47,7 +47,7 @@ void draw() {
       }
     }
     textSize(14);
-    text("you can change diffical game by wheeling your mouse wheel", 430, 600);
+    text("you can change diffical game by wheeling your mouse wheel", 300, 700);
     
   }
   
@@ -97,14 +97,17 @@ void mousePressed() {
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
   if (e == 1) {
-  clear();
   cols = 2;
   setup();
 }
   else {
-  clear();
-  cols = 4;
-  setup();
+    if(cols == 4){
+      cols = 8;
+      setup();
+    }else {
+      cols = 4;
+      setup();
+    }
 }
 }
 
