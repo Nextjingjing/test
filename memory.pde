@@ -46,8 +46,10 @@ void draw() {
         rect(i * cardSize, j * cardSize, cardSize, cardSize);
       }
     }
-    textSize(14);
-    text("you can change diffical game by wheeling your mouse wheel", 300, 700);
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(16);
+    text("you can change diffical game by wheeling your mouse wheel", 400, 700);
     
   }
   
@@ -99,6 +101,7 @@ void mouseWheel(MouseEvent event) {
   if (e == 1) {
   cols = 2;
   setup();
+  
 }
   else {
     if(cols == 4){
@@ -108,6 +111,7 @@ void mouseWheel(MouseEvent event) {
       cols = 4;
       setup();
     }
+ matchesFound = 0 ;   
 }
 }
 
