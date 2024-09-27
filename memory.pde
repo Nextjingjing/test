@@ -1,3 +1,5 @@
+// Pruek Tanvorakul 6601012610083
+
 int cols = 4; 
 int rows = 4; 
 int[][] cards = new int[cols][rows]; 
