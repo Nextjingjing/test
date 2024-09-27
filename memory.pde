@@ -1,7 +1,7 @@
 // Pruek Tanvorakul 6601012610083
 
-int cols = 2; 
-int rows = 4; 
+int cols = 4; 
+int rows = 5; 
 int[][] cards = new int[cols][rows]; 
 boolean[][] revealed = new boolean[cols][rows]; 
 int cardSize = 100; 
@@ -46,13 +46,9 @@ void draw() {
         rect(i * cardSize, j * cardSize, cardSize, cardSize);
       }
     }
-    textSize(16);
-    rect(500, 120, 200, 20, 28);
-    text("easy", 500, 119);
-    rect(500, 160, 200, 20, 28);
-    text("normal", 500, 159);
-    rect(500, 200, 200, 20, 28);
-    text("hard", 500, 198);
+    textSize(14);
+    text("you can change diffical game by wheeling your mouse wheel", 430, 600);
+    
   }
   
   if (checking) {
@@ -96,6 +92,20 @@ void mousePressed() {
     checking = true;
     checkTimer = 0;
   }
+}
+
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  if (e == 1) {
+  clear();
+  cols = 2;
+  setup();
+}
+  else {
+  clear();
+  cols = 4;
+  setup();
+}
 }
 
 int[] shuffle(int[] array) {
