@@ -50,6 +50,7 @@ void draw() {
     textAlign(CENTER, CENTER);
     textSize(16);
     text("you can change diffical game by wheeling your mouse wheel", 400, 700);
+    text("and if you want to play again when you win you can also wheeling it", 400, 750);
     
   }
   
