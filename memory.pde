@@ -13,7 +13,8 @@ int secondCardX = -1, secondCardY = -1;
 boolean checking = false;
 int checkTimer = 0;
 int matchesFound = 0;
-int secs = 60 * 60;
+int secs = 100 * 60;
+int mins = 10;
 
 
 void setup() {
@@ -37,8 +38,12 @@ void setup() {
 }
 
 void draw() {
-  delay(1000);
   secs -= 1;
+  
+  if (secs == 100 * 50){
+    mins -= 1;
+    //secs = 100 * 60;
+  }
   background(200);
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
@@ -56,9 +61,8 @@ void draw() {
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(16);
-    text(secs, 400, 550);
-    text(minute(), 350, 600);
-    text(second(), 400, 600);
+    text(mins + "  Min", 350, 550);
+    text(secs + "  Sec", 400, 550);
     text("You can change diffical game by wheeling your mouse wheel", 400, 700);
     text("and if you want to play again when you win you can also wheeling it.", 400, 750);
     
@@ -86,6 +90,7 @@ void draw() {
     textSize(32);
     text("You Win!", width / 2, height / 2);
   }
+  
 }
 
 void mousePressed() {
