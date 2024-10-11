@@ -1,4 +1,7 @@
 // Pruek Tanvorakul 6601012610083
+// Mutliplayer
+// Hint 
+// Timer
 
 int cols = 8; 
 int rows = 5; 
@@ -49,8 +52,8 @@ void draw() {
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(16);
-    text("you can change diffical game by wheeling your mouse wheel", 400, 700);
-    text("and if you want to play again when you win you can also wheeling it", 400, 750);
+    text("You can change diffical game by wheeling your mouse wheel", 400, 700);
+    text("and if you want to play again when you win you can also wheeling it.", 400, 750);
     
   }
   
