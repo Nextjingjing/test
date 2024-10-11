@@ -151,7 +151,7 @@ void hint(){
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       if(cards[i][j] == cards[firstCardX][firstCardY]){
-      if(j != firstCardY && i != firstCardX){
+      if(i != firstCardX){
           hintValue = j;
         }
         println(j, i);
