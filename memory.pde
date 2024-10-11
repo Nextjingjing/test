@@ -15,6 +15,7 @@ int checkTimer = 0;
 int matchesFound = 0;
 int secs = 100 * 60;
 int mins = 10;
+int hintValue = 0;
 
 
 void setup() {
@@ -63,6 +64,8 @@ void draw() {
     textSize(16);
     text(mins + "  Min", 350, 550);
     text(secs/100 + "  Sec", 400, 550);
+    text("hint:  " + (hintValue+1) + " row", 375, 600);
+    text("first cell is row 1 column 1", 400, 650);
     text("You can change diffical game by wheeling your mouse wheel", 400, 700);
     text("and if you want to play again when you win you can also wheeling it.", 400, 750);
     
@@ -110,6 +113,7 @@ void mousePressed() {
     checking = true;
     checkTimer = 0;
   }
+  hint();
 }
 
 void mouseWheel(MouseEvent event) {
@@ -141,4 +145,17 @@ int[] shuffle(int[] array) {
     array[j] = temp;
   }
   return array;
+}
+
+void hint(){
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      if(cards[i][j] == cards[firstCardX][firstCardY]){
+        if(j != firstCardY ){
+          hintValue = j;
+        }
+        println(j, i);
+      }
+    }
+  }
 }
