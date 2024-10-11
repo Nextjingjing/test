@@ -91,7 +91,7 @@ void draw() {
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(32);
-    text("You Win!", width / 2, height / 2);
+    //text("You Win!", width / 2, height / 2);
   }
   
 }
