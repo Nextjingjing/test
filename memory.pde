@@ -40,9 +40,9 @@ void setup() {
 void draw() {
   secs -= 1;
   
-  if (secs == 100 * 50){
+  if (secs == 0 * 100){
     mins -= 1;
-    //secs = 100 * 60;
+    secs = 100 * 60;
   }
   background(200);
   for (int i = 0; i < cols; i++) {
@@ -62,7 +62,7 @@ void draw() {
     textAlign(CENTER, CENTER);
     textSize(16);
     text(mins + "  Min", 350, 550);
-    text(secs + "  Sec", 400, 550);
+    text(secs/100 + "  Sec", 400, 550);
     text("You can change diffical game by wheeling your mouse wheel", 400, 700);
     text("and if you want to play again when you win you can also wheeling it.", 400, 750);
     
@@ -113,6 +113,8 @@ void mousePressed() {
 }
 
 void mouseWheel(MouseEvent event) {
+  secs = 100 * 60;
+  mins = 10;
   float e = event.getCount();
   if (e == 1) {
   cols = 2;
