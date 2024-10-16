@@ -17,9 +17,12 @@ int totalSeconds = 600;  // 10 minutes
 int hintRow = -1;
 
 // Player-related variables
-int currentPlayer = 1;  // 1 or 2 to represent the active player
+int currentPlayer = 1;
 int player1Score = 0;
 int player2Score = 0;
+
+// Developer Mode
+boolean devMode = false;
 
 void setup() {
   size(800, 800);
@@ -42,29 +45,28 @@ void resetGame() {
     }
   }
 
-  // Reset game state
   firstCardX = firstCardY = secondCardX = secondCardY = -1;
   checking = false;
   matchesFound = 0;
-  totalSeconds = 600;  // Reset to 10 minutes
+  totalSeconds = 600;
   hintRow = -1;
-
-  // Reset player state
   player1Score = 0;
   player2Score = 0;
   currentPlayer = 1;
+  devMode = false;
 }
 
 void draw() {
   background(200);
   drawBoard();
+  drawDevModeButton();
   updateTimer();
 
   if (checking) {
     checkTimer++;
     if (checkTimer > 60) {
       checkMatch();
-      togglePlayer();  // Switch to the other player after a complete turn
+      togglePlayer();
     }
   }
 
@@ -79,7 +81,7 @@ void draw() {
     } else {
       text("It's a Draw!", width / 2, height / 2);
     }
-    noLoop();  // Stop the game when it's over
+    noLoop();
   }
 }
 
@@ -95,11 +97,17 @@ void drawBoard() {
       } else {
         fill(150);
         rect(i * cardSize, j * cardSize, cardSize, cardSize);
+
+        if (devMode) {
+          fill(0);
+          textSize(10);
+          textAlign(CENTER, CENTER);
+          text(cards[i][j], i * cardSize + cardSize / 2, j * cardSize + cardSize / 2);
+        }
       }
     }
   }
 
-  // Display Timer, Scores, and Current Player
   fill(0);
   textAlign(CENTER, CENTER);
   textSize(16);
@@ -119,6 +127,19 @@ void drawBoard() {
   text("Use mouse wheel to adjust difficulty or restart.", 400, 750);
 }
 
+void drawDevModeButton() {
+  int buttonX = width - 120;  // Button aligned to the right
+  int buttonY = height - 70;  // Button aligned to the bottom
+
+  fill(devMode ? color(0, 255, 0) : color(255, 0, 0));
+  rect(buttonX, buttonY, 100, 40);  // Draw the button
+
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(16);
+  text("Dev Mode", buttonX + 50, buttonY + 20);  // Button label centered
+}
+
 void updateTimer() {
   if (frameCount % 60 == 0 && totalSeconds > 0) {
     totalSeconds--;
@@ -128,7 +149,7 @@ void updateTimer() {
     textAlign(CENTER, CENTER);
     textSize(32);
     text("Time's Up! Game Over.", width / 2, height / 2);
-    noLoop();  // Stop the game when time is up
+    noLoop();
   }
 }
 
@@ -138,7 +159,6 @@ void checkMatch() {
     revealed[secondCardX][secondCardY] = true;
     matchesFound++;
 
-    // Increase the score of the current player
     if (currentPlayer == 1) {
       player1Score++;
     } else {
@@ -150,10 +170,18 @@ void checkMatch() {
 }
 
 void togglePlayer() {
-  currentPlayer = (currentPlayer == 1) ? 2 : 1;  // Switch between Player 1 and Player 2
+  currentPlayer = (currentPlayer == 1) ? 2 : 1;
 }
 
 void mousePressed() {
+  int buttonX = width - 120;
+  int buttonY = height - 70;
+
+  if (mouseX >= buttonX && mouseX <= buttonX + 100 && mouseY >= buttonY && mouseY <= buttonY + 40) {
+    devMode = !devMode;
+    return;
+  }
+
   if (checking || matchesFound == (cols * rows) / 2) return;
 
   int x = mouseX / cardSize;
@@ -164,7 +192,7 @@ void mousePressed() {
   if (firstCardX == -1) {
     firstCardX = x;
     firstCardY = y;
-    provideHint();  // Provide hint immediately on first click
+    provideHint();
   } else if (secondCardX == -1 && (x != firstCardX || y != firstCardY)) {
     secondCardX = x;
     secondCardY = y;
@@ -174,11 +202,11 @@ void mousePressed() {
 }
 
 void provideHint() {
-  hintRow = -1;  // Reset hint
+  hintRow = -1;
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       if (cards[i][j] == cards[firstCardX][firstCardY] && !(i == firstCardX && j == firstCardY)) {
-        hintRow = j;  // Store the row where a match is found
+        hintRow = j;
         return;
       }
     }
@@ -188,11 +216,11 @@ void provideHint() {
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
   if (e == 1) {
-    cols = 2;  // Easy mode
+    cols = 2;
   } else if (cols == 4) {
-    cols = 8;  // Hard mode
+    cols = 8;
   } else {
-    cols = 4;  // Medium mode
+    cols = 4;
   }
   setup();
 }
