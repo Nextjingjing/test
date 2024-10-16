@@ -16,6 +16,11 @@ int matchesFound = 0;
 int totalSeconds = 600;  // 10 minutes
 int hintRow = -1;
 
+// Player-related variables
+int currentPlayer = 1;  // 1 or 2 to represent the active player
+int player1Score = 0;
+int player2Score = 0;
+
 void setup() {
   size(800, 800);
   resetGame();
@@ -37,11 +42,17 @@ void resetGame() {
     }
   }
 
+  // Reset game state
   firstCardX = firstCardY = secondCardX = secondCardY = -1;
   checking = false;
   matchesFound = 0;
   totalSeconds = 600;  // Reset to 10 minutes
   hintRow = -1;
+
+  // Reset player state
+  player1Score = 0;
+  player2Score = 0;
+  currentPlayer = 1;
 }
 
 void draw() {
@@ -53,6 +64,7 @@ void draw() {
     checkTimer++;
     if (checkTimer > 60) {
       checkMatch();
+      togglePlayer();  // Switch to the other player after a complete turn
     }
   }
 
@@ -60,7 +72,14 @@ void draw() {
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(32);
-    text("Congratulations! You Win!", width / 2, height / 2);
+    if (player1Score > player2Score) {
+      text("Player 1 Wins!", width / 2, height / 2);
+    } else if (player2Score > player1Score) {
+      text("Player 2 Wins!", width / 2, height / 2);
+    } else {
+      text("It's a Draw!", width / 2, height / 2);
+    }
+    noLoop();  // Stop the game when it's over
   }
 }
 
@@ -80,22 +99,24 @@ void drawBoard() {
     }
   }
 
-  // Display Timer and Hint
+  // Display Timer, Scores, and Current Player
   fill(0);
   textAlign(CENTER, CENTER);
   textSize(16);
   int mins = totalSeconds / 60;
   int secs = totalSeconds % 60;
   text(String.format("Time: %02d:%02d", mins, secs), 400, 550);
+  text("Player 1 Score: " + player1Score, 300, 600);
+  text("Player 2 Score: " + player2Score, 500, 600);
+  text("Current Player: Player " + currentPlayer, 400, 650);
 
   if (hintRow != -1) {
-    text("Hint: Match found in row " + (hintRow + 1), 400, 600);
+    text("Hint: Match in row " + (hintRow + 1), 400, 700);
   } else {
-    text("Hint: No hint available", 400, 600);
+    text("Hint: No hint available", 400, 700);
   }
 
-  text("First cell is row 1, column 1", 400, 650);
-  text("Use mouse wheel to adjust difficulty or restart.", 400, 700);
+  text("Use mouse wheel to adjust difficulty or restart.", 400, 750);
 }
 
 void updateTimer() {
@@ -116,9 +137,20 @@ void checkMatch() {
     revealed[firstCardX][firstCardY] = true;
     revealed[secondCardX][secondCardY] = true;
     matchesFound++;
+
+    // Increase the score of the current player
+    if (currentPlayer == 1) {
+      player1Score++;
+    } else {
+      player2Score++;
+    }
   }
   firstCardX = firstCardY = secondCardX = secondCardY = -1;
   checking = false;
+}
+
+void togglePlayer() {
+  currentPlayer = (currentPlayer == 1) ? 2 : 1;  // Switch between Player 1 and Player 2
 }
 
 void mousePressed() {
@@ -132,12 +164,12 @@ void mousePressed() {
   if (firstCardX == -1) {
     firstCardX = x;
     firstCardY = y;
+    provideHint();  // Provide hint immediately on first click
   } else if (secondCardX == -1 && (x != firstCardX || y != firstCardY)) {
     secondCardX = x;
     secondCardY = y;
     checking = true;
     checkTimer = 0;
-    provideHint();
   }
 }
 
